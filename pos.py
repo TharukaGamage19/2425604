@@ -345,7 +345,7 @@ class POSSystem:
                     case '6':
                         self.generate_tax_file()
                     case '0':
-                        print("Exiting system!")
+                        print("Exiting system..!")
                         break
                     case _:
                         print("Error: Invalid choice! (0-6)")
