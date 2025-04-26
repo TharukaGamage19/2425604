@@ -14,7 +14,7 @@ class POSSystem:
         self.ensure_directories()
 
     def ensure_directories(self):
-        """Create necessary directories if they don't exist"""
+        """Creating directories if they don't exist"""
         try:
             if not os.path.exists(self.data_dir):
                 os.makedirs(self.data_dir)
@@ -26,7 +26,7 @@ class POSSystem:
             print(f"Error creating directories: {e}")
 
     def validate_item_code(self, item_code):
-        """Validate if item code follows the pattern (letters, numbers, underscores)"""
+        """Validating the item code follows the pattern (letters, numbers, underscores)"""
         pattern = r'^[a-zA-Z0-9_]+$'
         return bool(re.match(pattern, item_code))
 
@@ -35,27 +35,27 @@ class POSSystem:
         continue_adding = True
 
         while continue_adding:
-            print("\n--- Add Item to Basket ---")
+            print("\n--- Add Item to Basket ---\n")
 
             # Validate item code
             while True:
-                item_code = input("Enter item code (e.g., Lemon_01): ")
+                item_code = input("Enter item code \n(item code can only contain letters, numbers, underscores): ")
                 if self.validate_item_code(item_code):
                     break
-                print("Invalid item code. Use only letters, numbers, and underscores.")
+                print("Error: Invalid item code. \nUse only letters, numbers, and underscores.")
 
             # Get price details with validation
             try:
-                internal_price = Decimal(input("Enter internal price: "))
-                discount = Decimal(input("Enter discount amount: "))
-                sale_price = Decimal(input("Enter sale price: "))
+                internal_price = Decimal(input("Enter internal price: $"))
+                discount = Decimal(input("Enter discount amount: $"))
+                sale_price = Decimal(input("Enter sale price: $"))
                 quantity = int(input("Enter quantity: "))
 
                 if internal_price < 0 or discount < 0 or sale_price < 0 or quantity <= 0:
                     raise ValueError("Values cannot be negative and quantity must be positive")
 
                 # Calculate line total
-                line_total = sale_price * quantity
+                line_total = (sale_price -discount) * quantity
 
                 # Add to basket
                 self.basket.append({
@@ -92,8 +92,8 @@ class POSSystem:
         print("-" * 75)
 
         for idx, item in enumerate(self.basket, 1):
-            print(f"{idx:4} | {item['item_code']:9} | {item['internal_price']:10} | {item['discount']:8} | "
-                  f"{item['sale_price']:10} | {item['quantity']:8} | {item['line_total']:10}")
+            print(f"{idx:4} | {item['item_code']:9} | {item['internal_price']:10}$ | {item['discount']:8}$ | "
+                  f"{item['sale_price']:10}$ | {item['quantity']:8} | {item['line_total']:10}$")
 
     def delete_item(self):
         """Delete an item from the basket by line number"""
