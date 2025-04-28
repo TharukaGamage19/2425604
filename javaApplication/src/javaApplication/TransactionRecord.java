@@ -32,7 +32,7 @@ public class TransactionRecord {
 
 
 
-     //Profit = (internal price * quantity) – (sale price * quantity – discount)
+     //Profit = (sale price * quantity-(discount * quantity)) – (internal price * quantity)
     public void calculateProfit() {
         BigDecimal internalTotal = internalPrice.multiply(new BigDecimal(quantity));
         BigDecimal discountTotal = discount.multiply(new BigDecimal(quantity));
@@ -150,8 +150,11 @@ public class TransactionRecord {
                 salePrice + "," + quantity + "," + lineTotal;
     }
 
-    //Line Total = sale price * quantity - discount
+    // Line Total = (sale price * quantity) - (discount * quantity)
     public void calculateLineTotal() {
-        this.lineTotal = this.salePrice.multiply(new BigDecimal(quantity)).subtract(this.discount);
+        BigDecimal totalSalePrice = this.salePrice.multiply(new BigDecimal(quantity));
+        BigDecimal totalDiscount = this.discount.multiply(new BigDecimal(quantity));
+        this.lineTotal = totalSalePrice.subtract(totalDiscount);
     }
+
 }
